@@ -1,0 +1,5 @@
+﻿using System; namespace C101.stores {
+  public struct
+  sales {
+  }
+}

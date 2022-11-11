@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+//using System.Diagnostics;
 
 namespace C101
 {
@@ -7,7 +9,7 @@ namespace C101
     {
         public static void Main(string[] args)
         {
-            int intAction = 2;
+            int intAction = 4;
 
             switch(intAction)
             {
@@ -16,6 +18,12 @@ namespace C101
                     break;
                 case 2:
                     angOOP();
+                    break;
+                case 3:
+                    angLoggingAndTracing();
+                    break;
+                case 4:
+                    angListAllDirectories();
                     break;
                 default:
                     angWelcome();
@@ -53,6 +61,42 @@ namespace C101
             //Console.WriteLine(account.Balance);
 
             Console.WriteLine(account.GetAccountHistory());
+        }
+
+        public static void angLoggingAndTracing()
+        {
+            int result = Fibonacci(5);
+            Console.WriteLine(result);
+        }
+
+        static int Fibonacci(int n)
+        {
+            //Debug.WriteLine($"Entering {nameof(Fibonacci)} method");
+            //Debug.WriteLine($"We are looking for the {n}th number");
+
+            int n1 = 0;
+            int n2 = 1;
+            int sum;
+            for (int i = 2; i < n; i++)
+            {
+                sum = n1 + n2;
+                n1 = n2;
+                n2 = sum;
+                //Debug.WriteLineIf(sum == 1, $"sum is 1, n1 is {n1}, n2 is {n2}");
+            }
+
+            return n == 0 ? n1 : n2;
+        }
+
+        public static void angListAllDirectories()
+        {
+            
+            IEnumerable<string> listOfDirectories = Directory.EnumerateDirectories("stores");
+
+            foreach(var dir in listOfDirectories)
+            {
+                Console.WriteLine(dir);
+            }
         }
     }
 }

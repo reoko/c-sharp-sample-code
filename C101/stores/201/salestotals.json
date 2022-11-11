@@ -1,0 +1,8 @@
+﻿using System; namespace C101.stores {
+  public class
+  salestotals {
+    public salestotals()
+    {
+    }
+  }
+}
