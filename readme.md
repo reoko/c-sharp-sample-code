@@ -2,4 +2,4 @@
 
 function list
 0. Welcome
-1. List
+1. List()
