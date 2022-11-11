@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Package1
+namespace C101
 {
-    class C101
+    class MainC101
     {
         public static void Main(string[] args)
         {
-            int intAction = 0;
+            int intAction = 2;
 
             switch(intAction)
             {
                 case 1:
                     angList();
+                    break;
+                case 2:
+                    angOOP();
                     break;
                 default:
                     angWelcome();
@@ -36,6 +39,12 @@ namespace Package1
             {
                 Console.WriteLine(name);
             }
+        }
+
+        public static void angOOP()
+        {
+            var account = new BankAccount("Kendra", 1000);
+            Console.WriteLine($"Account {account.Number} was created for {account.Owner} with {account.Balance}.");
         }
     }
 }
