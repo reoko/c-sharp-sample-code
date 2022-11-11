@@ -3,4 +3,5 @@
 function list
 0. Welcome()
 1. List()
-3. OOP()
+2. OOP()
+3. angLoggingAndTracing()
