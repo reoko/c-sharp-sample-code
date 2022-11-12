@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 //using System.Diagnostics;
 
 namespace C101
@@ -9,7 +9,7 @@ namespace C101
     {
         public static void Main(string[] args)
         {
-            int intAction = 4;
+            int intAction = 18;
 
             switch(intAction)
             {
@@ -24,6 +24,48 @@ namespace C101
                     break;
                 case 4:
                     angListAllDirectories();
+                    break;
+                case 5:
+                    angListOfFilesInDir();
+                    break;
+                case 6:
+                    angListOfAllFilesInDirAndSubDir();
+                    break;
+                case 7:
+                    angGetCurrentDir();
+                    break;
+                case 8:
+                    angGetUserHomeDirectory();
+                    break;
+                case 9:
+                    angJoinPath();
+                    break;
+                case 10:
+                    angFileExtensions();
+                    break;
+                case 11:
+                    angPathDirectoryInfoFileInfo();
+                    break;
+                case 12:
+                    angWorkPathDirectoryGetCurrentDirectory();
+                    break;
+                case 13:
+                    angFindAllFileWithExtension();
+                    break;
+                case 14:
+                    angCreateDirectory();
+                    break;
+                case 15:
+                    angCheckIfDirectoryExist();
+                    break;
+                case 16:
+                    angCreateFiles();
+                    break;
+                case 17:
+                    angCreateFilesDirectory();
+                    break;
+                case 18:
+                    angReadFiles();
                     break;
                 default:
                     angWelcome();
@@ -97,6 +139,179 @@ namespace C101
             {
                 Console.WriteLine(dir);
             }
+        }
+
+        public static void angListOfFilesInDir()
+        {
+            IEnumerable<string> files = Directory.EnumerateFiles("stores");
+
+            foreach(var file in files)
+            {
+                Console.WriteLine(file);
+            }
+        }
+
+        public static void angListOfAllFilesInDirAndSubDir()
+        {
+            IEnumerable<string> allFilesInAllFolders = Directory.EnumerateFiles("stores", "*.*", SearchOption.AllDirectories);
+
+            foreach(var file in allFilesInAllFolders)
+            {
+                Console.WriteLine(file);
+            }
+        }
+
+        public static void angGetCurrentDir()
+        {
+            Console.WriteLine(Directory.GetCurrentDirectory());
+        }
+
+        public static void angGetUserHomeDirectory()
+        {
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            Console.WriteLine(docPath);
+        }
+
+        public static void angDirectorySeparatorChar()
+        {
+            Console.WriteLine($"stores{Path.DirectorySeparatorChar}201");
+
+            // returns:
+            // stores\201 on Windows
+            //
+            // stores/201 on macOS
+        }
+
+        public static void angJoinPath()
+        {
+            Console.WriteLine(Path.Combine("stores","201")); // outputs: stores/201
+        }
+
+        public static void angFileExtensions()
+        {
+            Console.WriteLine(Path.GetExtension("sales.json")); // outputs: .json
+        }
+
+        public static void angPathDirectoryInfoFileInfo()
+        {
+            string fileName = $"stores{Path.DirectorySeparatorChar}201{Path.DirectorySeparatorChar}sales{Path.DirectorySeparatorChar}sales.json";
+
+            FileInfo info = new FileInfo(fileName);
+
+            Console.WriteLine($"Full Name: {info.FullName}{Environment.NewLine}Directory: {info.Directory}{Environment.NewLine}Extension: {info.Extension}{Environment.NewLine}Create Date: {info.CreationTime}"); // And many more
+        }
+
+        public static IEnumerable<string> FindFiles(string folderName)
+        {
+            List<string> salesFiles = new List<string>();
+
+            var foundFiles = Directory.EnumerateFiles(folderName, "*", SearchOption.AllDirectories);
+
+            foreach (var file in foundFiles)
+            {
+                // The file name will contain the full path, so only check the end of it
+                if (file.EndsWith("sales.json"))
+                {
+                    salesFiles.Add(file);
+                }
+            }
+
+            return salesFiles;
+        }
+
+        public static void angWorkPathDirectoryGetCurrentDirectory()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+
+            var storesDirectory = Path.Combine(currentDirectory, "stores");
+
+            var salesFiles = FindFiles(storesDirectory);
+
+            foreach (var file in salesFiles)
+            {
+                Console.WriteLine(file);
+            }
+        }
+
+        public static IEnumerable<string> FindFiles2(string folderName)
+        {
+            List<string> salesFiles = new List<string>();
+
+            var foundFiles = Directory.EnumerateFiles(folderName, "*", SearchOption.AllDirectories);
+
+            foreach (var file in foundFiles)
+            {
+                var extension = Path.GetExtension(file);
+                if (extension == ".json")
+                {
+                    salesFiles.Add(file);
+                }
+            }
+
+            return salesFiles;
+        }
+
+        public static void angFindAllFileWithExtension()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var storesDirectory = Path.Combine(currentDirectory, "stores");
+
+            var salesFiles = FindFiles2(storesDirectory);
+                
+            foreach (var file in salesFiles)
+            {
+                Console.WriteLine(file);
+            }
+        }
+
+        public static void angCreateDirectory()
+        {
+            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "stores","201","newDir"));
+
+            Console.WriteLine("Create New Folder: " + Path.Combine(Directory.GetCurrentDirectory(), "stores","201","newDir"));
+        }
+
+        public static void angCheckIfDirectoryExist()
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "stores","201","newDir");
+
+            bool doesDirectoryExist = Directory.Exists(filePath);
+
+            if (doesDirectoryExist)
+                Console.WriteLine("TRUE");
+            else
+                Console.WriteLine("FALSE");
+        }
+    
+        public static void angCreateFiles()
+        {
+            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "stores","201","newDir","greeting.txt"), "Hello World!");
+        }
+
+        public static void angCreateFilesDirectory()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            Console.WriteLine(currentDirectory);
+
+            var storesDirectory = Path.Combine(currentDirectory, "stores");
+            Console.WriteLine(storesDirectory);
+
+            var salesTotalDir = Path.Combine(currentDirectory, "salesTotalDir");
+            Console.WriteLine(salesTotalDir);
+
+            Directory.CreateDirectory(salesTotalDir);
+
+            var salesFiles = FindFiles(storesDirectory);
+
+            File.WriteAllText(Path.Combine(salesTotalDir, "totals.txt"), String.Empty);
+        }
+    
+        public static void angReadFiles()
+        {
+            var readDataFromFile = File.ReadAllText($"stores{Path.DirectorySeparatorChar}201{Path.DirectorySeparatorChar}sales.json");
+
+            Console.WriteLine(readDataFromFile);
         }
     }
 }

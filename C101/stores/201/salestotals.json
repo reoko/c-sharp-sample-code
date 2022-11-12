@@ -1,8 +1,3 @@
-﻿using System; namespace C101.stores {
-  public class
-  salestotals {
-    public salestotals()
-    {
-    }
-  }
+{
+    "OverallTotal": 1501.22
 }
