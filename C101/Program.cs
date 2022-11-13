@@ -10,7 +10,7 @@ namespace C101
     {
         public static void Main(string[] args)
         {
-            int intAction = 21;
+            int intAction = 22;
 
             switch(intAction)
             {
@@ -76,6 +76,9 @@ namespace C101
                     break;
                 case 21:
                     angAppendDataToTxtFiles();
+                    break;
+                case 22:
+                    angReadAndWriteFile();
                     break;
                 default:
                     angWelcome();
@@ -363,7 +366,44 @@ namespace C101
             File.AppendAllText($"salesTotalDir{Path.DirectorySeparatorChar}totals.txt", $"{data.Total}{Environment.NewLine}");
         }
 
+        record SalesData (double Total);
 
+        static double CalculateSalesTotal(IEnumerable<string> salesFiles)
+        {
+            double salesTotal = 0;
+
+            // Loop over each file path in salesFiles
+            foreach (var file in salesFiles)
+            {
+                // Read the contents of the file
+                string salesJson = File.ReadAllText(file);
+
+                // Parse the contents as JSON
+                SalesData? data = JsonConvert.DeserializeObject<SalesData?>(salesJson);
+                
+                // Add the amount found in the Total field to the salesTotal variable
+
+                salesTotal += data?.Total ?? 0;
+            }
+
+            return salesTotal;
+        }
+
+        public static void angReadAndWriteFile()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var storesDir = Path.Combine(currentDirectory, "stores");
+
+            var salesTotalDir = Path.Combine(currentDirectory, "salesTotalDir");
+            Directory.CreateDirectory(salesTotalDir);
+
+            var salesFiles = FindFiles2(storesDir);
+
+            var salesTotal = CalculateSalesTotal(salesFiles);
+
+            //File.WriteAllText(Path.Combine(salesTotalDir, "totals.txt"), String.Empty);
+            File.AppendAllText(Path.Combine(salesTotalDir, "totals.txt"), $"{salesTotal}{Environment.NewLine}");
+        }
     }
 
     class SalesTotal
