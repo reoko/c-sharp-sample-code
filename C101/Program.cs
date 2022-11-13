@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 //using System.Diagnostics;
 
 namespace C101
@@ -9,7 +10,7 @@ namespace C101
     {
         public static void Main(string[] args)
         {
-            int intAction = 18;
+            int intAction = 21;
 
             switch(intAction)
             {
@@ -66,6 +67,15 @@ namespace C101
                     break;
                 case 18:
                     angReadFiles();
+                    break;
+                case 19:
+                    angParseDataInJsonFile();
+                    break;
+                case 20:
+                    angWriteDataToTxtFile();
+                    break;
+                case 21:
+                    angAppendDataToTxtFiles();
                     break;
                 default:
                     angWelcome();
@@ -313,5 +323,51 @@ namespace C101
 
             Console.WriteLine(readDataFromFile);
         }
+
+        public static void angParseDataInJsonFile()
+        {
+            var salesJson = File.ReadAllText($"stores{Path.DirectorySeparatorChar}201{Path.DirectorySeparatorChar}sales.json");
+            var salesData = JsonConvert.DeserializeObject<SalesTotal>(salesJson);
+
+            Console.WriteLine(salesData.Total);
+        }
+
+        public static void angWriteDataToTxtFile()
+        {
+            var salesJson = File.ReadAllText($"stores{Path.DirectorySeparatorChar}201{Path.DirectorySeparatorChar}sales.json");
+            var salesData = JsonConvert.DeserializeObject<SalesTotal>(salesJson);
+
+            //Console.WriteLine(salesData.Total);
+
+            var data = JsonConvert.DeserializeObject<SalesTotal>(salesJson);
+
+            File.WriteAllText($"salesTotalDir{Path.DirectorySeparatorChar}totals.txt", data.Total.ToString());
+
+            // totals.txt
+            // 22385.32
+        }
+
+        public static void angAppendDataToTxtFiles()
+        {
+            var salesJson = File.ReadAllText($"stores{Path.DirectorySeparatorChar}201{Path.DirectorySeparatorChar}sales.json");
+            var salesData = JsonConvert.DeserializeObject<SalesTotal>(salesJson);
+
+            //Console.WriteLine(salesData.Total);
+
+            //var data = JsonConvert.DeserializeObject<SalesTotal>(salesJson);
+
+            //File.WriteAllText($"salesTotalDir{Path.DirectorySeparatorChar}totals.txt", data.Total.ToString());
+
+            var data = JsonConvert.DeserializeObject<SalesTotal>(salesJson);
+
+            File.AppendAllText($"salesTotalDir{Path.DirectorySeparatorChar}totals.txt", $"{data.Total}{Environment.NewLine}");
+        }
+
+
+    }
+
+    class SalesTotal
+    {
+        public double Total { get; set; }
     }
 }
