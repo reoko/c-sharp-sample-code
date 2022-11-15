@@ -410,4 +410,9 @@ namespace C101
     {
         public double Total { get; set; }
     }
+
+    class GitClass 
+    {
+        
+    }
 }
