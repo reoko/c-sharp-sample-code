@@ -413,6 +413,9 @@ namespace C101
 
     class GitClass 
     {
-        
+        public funcAdd()
+        {
+            
+        }
     }
 }
