@@ -418,4 +418,12 @@ namespace C101
             
         }
     }
+
+    class GitExer()
+    {
+        public static void create()
+        {
+            
+        }
+    }
 }
